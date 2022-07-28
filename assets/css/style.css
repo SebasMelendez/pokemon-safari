@@ -1,0 +1,41 @@
+.bg-img { 
+    background-image: url(../img/bg2.png) ;
+    background-position: center center;
+    background-repeat:  no-repeat;
+    /* background-attachment: fixed; */
+    background-size:  cover;
+    background-color: #999;
+
+}
+
+ /* Acryllic Material Starts */
+ .acrylic {
+    /* Parent background + Gaussian blur */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  
+    /* Exclusion blend */
+    background-blend-mode: exclusion;
+  
+    /* Color/tint overlay + Opacity */
+    background: rgba(255, 255, 255, 0.0);
+  
+    /* Tiled noise texture */
+    background-image: url(../img/acryllic.png);
+  }
+
+  @media screen and (max-width: 768px) {
+
+
+    .bg-img { 
+        
+        background-image: url(../img/texture.jpg) ;
+        /* background-position: center center; */
+        background-repeat: repeat;
+        /* background-attachment: fixed; */
+        background-size:  auto;
+        background-color: #999;
+    
+    }
+
+  }

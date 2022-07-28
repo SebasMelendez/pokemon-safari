@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pokemon Safari</title>
+    <link rel="icon" type="image/x-icon" href="./assets/img/Poké_Ball_icon.svg">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <!-- Bulma Version 0.9.0-->
@@ -13,10 +14,10 @@
     <link rel="stylesheet"  href="./assets/css/style.css">
 </head>
 
-<body>
+<body class="has-background-info-light">
 
     <!-- START NAV -->
-    <nav class="navbar is-white">
+    <nav class="navbar is-primary">
         <div class="container">
             <div class="navbar-brand">
                 <a class="navbar-item brand-text" href="../index.html">
@@ -52,63 +53,88 @@
     </nav>
     <!-- END NAV -->
     <div class="container">
-        <div class="columns">
+        <div class="">
 
-            <div class="column is-12">
-                <section class="hero is-info welcome is-small">
+            <div class="">
+                <section class="hero is-link welcome is-small">
                     <div class="hero-body">
                         <div class="container">
                             <h1 class="title">
-                                Gatta Catch them all!
+                                Gotta Catch them all!
                             </h1>
                             <h2 class="subtitle">
-                                Pokemon
+                                Find pokemon based on the weather of your city!
                             </h2>
                         </div>
                     </div>
                 </section>
-                <input class="input is-medium" type="text" placeholder="Search weather and near by pokemon">
-                <div class="box hero is-primary">
+                <section class="box"> 
+                    <div class="control has-icons-left">
+                        <input id="search-target" class="input is-large" type="text" placeholder="City Name">
+                        <span class="icon is-medium is-left">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <footer class="buttons has-addons card-footer">
+                        <button id="searchBtn-target" class="button card-footer-item is-primary">
+                            Search
+                          </button>
+                          <button id="clearBtn-target" class="button card-footer-item is-danger">
+                            Clear Searchbar
+                          </button>
+                    </footer>
+                </section>
+                <section>
+                    <div class="box mb-5">
+                        <h1 class="title">
+                            Weather conditions for <span id="city-target">City</span> are: <span id="weather-target">--</span>
+                        </h1>
+                        <h2 class="subtitle">
+                            Pokemon type around here is: <span id="type-target">--</span>
+                        </h2>
+                </section>
+                <div class="box bg-img ">
+
                     <section class="info-tiles">
-                        <div class="tile is-ancestor has-text-centered">
+                        <div id ="pokeParade" class="tile is-ancestor has-text-centered is-invisible">
                             <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p id="date-1" class="title">Pokemon</p>
-                                    <span id="day1-icon-target" class="tag is-medium is-info mb-5">--</span>
-                                    <figure class="image ">
-                                        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                <article class="tile is-child box acrylic ">
+                                    <p id="pokeName-0" class="title">Pokemon</p>
+                                    <span id="poke-type-target0" class="tag is-medium is-info mb-5">--</span>
+                                    <figure id="pokeImage-0" class="image ">
+                                        <!-- <img class="is-128x128" src="./assets/img/WTP.png"> -->
                                       </figure>
-                                      <button class="button mt-3">Catch</button>
+                                      <button id="catch-0" class="button mt-3">Catch</button>
                                 </article>
                             </div>
                             <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p id="date-2" class="title">Pokemon</p>
-                                    <span id="day2-icon-target" class="tag is-medium is-info mb-5">--</span>
-                                    <figure class="image ">
-                                        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                <article class="tile is-child box acrylic">
+                                    <p id="pokeName-1" class="title">Pokemon</p>
+                                    <span id="poke-type-target1" class="tag is-medium is-info mb-5">--</span>
+                                    <figure id="pokeImage-1" class="image ">
+                                        <!-- <img class="is-128x128" src="./assets/img/WTP.png"> -->
                                       </figure>
-                                      <button class="button mt-3">Catch</button>
+                                      <button id="catch-1" class="button mt-3">Catch</button>
                                 </article>
                             </div>
                             <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p id="date-3" class="title">Pokemon</p>
-                                    <span id="day3-icon-target" class="tag is-medium is-info mb-5">--</span>
-                                    <figure class="image ">
-                                        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                <article class="tile is-child box acrylic">
+                                    <p id="pokeName-2" class="title">Pokemon</p>
+                                    <span id="poke-type-target2" class="tag is-medium is-info mb-5">--</span>
+                                    <figure id="pokeImage-2" class="image ">
+                                        <!-- <img class="is-128x128" src="./assets/img/WTP.png"> -->
                                       </figure>
-                                      <button class="button mt-3">Catch</button>
+                                      <button id="catch-2" class="button mt-3">Catch</button>
                                 </article>
                             </div>
                             <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p id="date-4" class="title">Pokemon</p>
-                                    <span id="day4-icon-target" class="tag is-medium is-info mb-5">--</span>
-                                    <figure class="image ">
-                                        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                <article class="tile is-child box acrylic">
+                                    <p id="pokeName-3" class="title">Pokemon</p>
+                                    <span id="poke-type-target3" class="tag is-medium is-info mb-5">--</span>
+                                    <figure id="pokeImage-3" class="image ">
+                                        <!-- <img class="is-128x128" src="./assets/img/WTP.png"> -->
                                       </figure>
-                                      <button class="button mt-3">Catch</button>
+                                      <button id="catch-3" class="button mt-3">Catch</button>
                                 </article>
                             </div>
                         </div>
@@ -125,6 +151,9 @@
         </div>
     </div>
     <!-- <script async type="text/javascript" src="../js/bulma.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="./assets/js/backend.js"></script>
 </body>
 
 </html>
