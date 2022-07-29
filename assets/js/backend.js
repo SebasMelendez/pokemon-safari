@@ -16,6 +16,7 @@ let release3 = $("#release-2")
 let release4 = $("#release-3")
 let release5 = $("#release-4")
 let release6 = $("#release-5")
+let modalClose =$(".delete")
 let globalType = ""
 let pokeSavable = []
 let pokePersist = []
@@ -45,9 +46,26 @@ let searchElements = {
     element: "7f131d38f4522306e0a68bfbf8394fcd"
 }
 
+function closeModal(){
+    let modal = $("#modal")
+    modal.removeClass("is-active")
+}
+
+function openModal(header,text){
+
+    // console.log(header,text)
+    let modal = $("#modal")
+    let modalContent = $(".message-body")
+    let modalHeader = $("#headerText")
+    modalHeader.html(header) 
+    modalContent.html(text) 
+    modal.addClass("is-active")
+
+}
+
 function removePoke(release){
     if (pokePersist.length <= 0) {
-        alert("you don't have any pokemon!")
+        openModal("Wait a Minute!","you don't have any pokemon!")
     }
     else {
         // pokePersist.push(pokeSavable[pokemon])
@@ -160,13 +178,14 @@ function loaddata() {
 function persistData(pokemon,run) {
     if(!run){
         if (pokePersist.length >= 6) {
-            alert("you already have 6 pokemon!")
+            openModal("Woah there!","You already have 6 Pokemon!")
         }
         else {
             pokePersist.push(pokeSavable[pokemon])
     
             localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
             console.log(pokePersist)
+            openModal("Gotcha!","Pokemon Caught!")
             populateBank()
         }
     }
@@ -418,12 +437,12 @@ function ApiConnect(searchArg) {
                     })
                 }
                 else {
-                    alert("Error with Pokemon Fetch")
+                    openModal("Uh-Oh","Error with Pokemon Fetch")
                     searchButton.removeClass('is-loading')
                 }
             })
             .catch(function (error) {
-                alert("Unable to pokemon data / connection failed")
+                openModal("Uh-Oh","Unable to pokemon data / connection failed")
                 searchButton.removeClass('is-loading')
             })
     }
@@ -462,12 +481,12 @@ function ApiConnect(searchArg) {
                     })
                 }
                 else {
-                    alert("Unable to find that city")
+                    openModal("Uh-Oh","Unable to find that city")
                     searchButton.removeClass('is-loading')
                 }
             })
             .catch(function (error) {
-                alert("Unable to fetch weather data / connection failed")
+                openModal("Uh-Oh","Unable to fetch weather data / connection failed")
                 searchButton.removeClass('is-loading')
             })
     }
@@ -498,12 +517,12 @@ function ApiConnect(searchArg) {
                     })
                 }
                 else {
-                    alert("Unable to find that city")
+                    openModal("Uh-Oh","Unable to find that city")
                     searchButton.removeClass('is-loading')
                 }
             })
             .catch(function (error) {
-                alert("Unable to fetch weather data / connection failed")
+                openModal("Uh-Oh","Unable to fetch weather data / connection failed")
                 searchButton.removeClass('is-loading')
             })
     }
@@ -526,15 +545,19 @@ clearButton.on("click", function () {
 //I dont know why bubbling wasnt working :(
 catch1.on("click", function () {
     persistData(0)
+    
 })
 catch2.on("click", function (event, target) {
     persistData(1)
+    
 })
 catch3.on("click", function (event, target) {
     persistData(2)
+    
 })
 catch4.on("click", function (event, target) {
     persistData(3)
+    
 })
 
 release1.on("click", function () {
@@ -554,6 +577,10 @@ release5.on("click", function (event, target) {
 })
 release6.on("click", function (event, target) {
     removePoke(5)
+})
+
+modalClose.on("click", function (event, target) {
+    closeModal()
 })
 
 loaddata()
