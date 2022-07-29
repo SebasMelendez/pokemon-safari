@@ -10,6 +10,12 @@ let catch1 = $("#catch-0")
 let catch2 = $("#catch-1")
 let catch3 = $("#catch-2")
 let catch4 = $("#catch-3")
+let release1 = $("#release-0")
+let release2 = $("#release-1")
+let release3 = $("#release-2")
+let release4 = $("#release-3")
+let release5 = $("#release-4")
+let release6 = $("#release-5")
 let globalType = ""
 let pokeSavable = []
 let pokePersist = []
@@ -39,8 +45,89 @@ let searchElements = {
     element: "7f131d38f4522306e0a68bfbf8394fcd"
 }
 
-function populateBank() {
+function removePoke(release){
+    if (pokePersist.length <= 0) {
+        alert("you don't have any pokemon!")
+    }
+    else {
+        // pokePersist.push(pokeSavable[pokemon])
 
+        // localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+        // console.log(pokePersist)
+        // populateBank()
+        let hand1 = pokePersist[pokePersist.length - 1]
+        
+        let hand2 = pokePersist[release]
+        pokePersist[pokePersist.length - 1] = hand2
+        pokePersist[release] = hand1
+        pokePersist.pop()
+        persistData("",true)
+        location.reload()
+        
+    //     let i = 0
+
+
+    // while(pokePersist[i] !=""){
+    //     let shifty = pokePersist.shift()
+    //     pokePersist.push(shifty)
+    //     i++
+
+    // }
+    }
+    
+}
+
+function populateBank() {
+    
+    for (let i = 0; i < pokePersist.length; i++) {
+        //     
+        if(pokePersist[i]){
+            let pokeBankNameEl = $("#pokeBankName-" + i)
+        let pokeBankSpriteEl = $("#pokeBankImage-" + i)
+        let pokeBankType = $("#pokeBank-type-target" + i)
+        let imgURL = pokePersist[i].sprite
+        let formattedName = pokePersist[i].name.replace("-", " ")
+        let imgShinyURL = pokePersist[i].spriteShiny
+        let imgFemaleURL = pokePersist[i].spriteFemale
+        let imgFemaleShinyURL = pokePersist[i].spriteFemaleShiny
+        let fullType
+        let type1 = pokePersist[i].types[0].type.name
+        if (pokePersist[i].types.length == 2) {
+            let type2 = pokePersist[i].types[1].type.name
+            fullType = type1 + " / " + type2
+        } else {
+            fullType = type1
+        }
+
+
+
+
+        pokeBankNameEl.html(formattedName)
+        pokeBankSpriteEl.html(" ")
+        let imgComponent = $("<img>")
+        imgComponent.attr("id", "img" + i)
+        imgComponent.addClass("is-128x128")
+
+        if (pokePersist[i].isFemale) {
+            if (pokePersist[i].isShiny) {
+                imgComponent.attr("src", imgFemaleShinyURL)
+            }
+            else {
+                imgComponent.attr("src", imgFemaleURL)
+            }
+        }
+        else if (pokePersist[i].isShiny) {
+            imgComponent.attr("src", imgShinyURL)
+        }
+        else {
+            imgComponent.attr("src", imgURL)
+        }
+        pokeBankSpriteEl.append(imgComponent)
+
+        pokeBankType.html(fullType)
+        }
+
+    } 
 }
 
 function loaddata() {
@@ -56,15 +143,23 @@ function loaddata() {
 
 }
 
-function persistData(pokemon) {
-    if (pokePersist.length == 6) {
-        alert("you already have 6 pokemon!")
+function persistData(pokemon,run) {
+    if(!run){
+        if (pokePersist.length >= 6) {
+            alert("you already have 6 pokemon!")
+        }
+        else {
+            pokePersist.push(pokeSavable[pokemon])
+    
+            localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+            console.log(pokePersist)
+            populateBank()
+        }
     }
-    else {
-        pokePersist.push(pokeSavable[pokemon])
-
-        // localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
-        console.log(pokePersist)
+    else{
+        localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+            console.log(pokePersist)
+            populateBank()
     }
 
 
@@ -81,7 +176,7 @@ function displayData(weatherData, pokeData) {
     pokeParade.removeClass("is-invisible")
 
     for (let i = 0; i < 4; i++) {
-        // debugger    
+        //     
         let pokeNameEl = $("#pokeName-" + i)
         let pokeSpriteEl = $("#pokeImage-" + i)
         let pokeType = $("#poke-type-target" + i)
@@ -126,7 +221,7 @@ function displayData(weatherData, pokeData) {
 
         pokeType.html(fullType)
 
-    } 1
+    } 
 
 }
 
@@ -214,7 +309,7 @@ function pokeTypeTranslate(weatherObj) {
 }
 
 function ApiConnect(searchArg) {
-    // debugger
+    // 
     searchButton.addClass('is-loading')
     //function declarations for API Calls
 
@@ -254,7 +349,7 @@ function ApiConnect(searchArg) {
                     }
 
                     if (i == 3) {
-                        // debugger
+                        // 
                         console.log("lets see", pokeArr)
                         searchButton.removeClass('is-loading')
                         displayData(weatherObj, pokeArr)
@@ -271,7 +366,7 @@ function ApiConnect(searchArg) {
         fetch(typeURL)
             .then(function (response) {
                 if (response.ok) {
-                    // debugger
+                    // 
                     response.json().then(function (data) {
                         // list
                         let pokeObj = {}
@@ -396,6 +491,7 @@ searchButton.on("click", function () {
 
 })
 
+//I dont know why bubbling wasnt working :(
 catch1.on("click", function () {
     persistData(0)
 })
@@ -407,6 +503,25 @@ catch3.on("click", function (event, target) {
 })
 catch4.on("click", function (event, target) {
     persistData(3)
+})
+
+release1.on("click", function () {
+    removePoke(0)
+})
+release2.on("click", function (event, target) {
+    removePoke(1)
+})
+release3.on("click", function (event, target) {
+    removePoke(2)
+})
+release4.on("click", function (event, target) {
+    removePoke(3)
+})
+release5.on("click", function (event, target) {
+    removePoke(4)
+})
+release6.on("click", function (event, target) {
+    removePoke(5)
 })
 
 loaddata()
