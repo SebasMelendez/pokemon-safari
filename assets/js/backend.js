@@ -6,74 +6,167 @@ let cityTarget = $("#city-target")
 let weatherTarget = $("#weather-target")
 let typeTarget = $("#type-target")
 let pokeParade = $("#pokeParade")
-let catch1 =$("#catch-0")
-let catch2 =$("#catch-1")
-let catch3 =$("#catch-2")
-let catch4 =$("#catch-3")
+let catch1 = $("#catch-0")
+let catch2 = $("#catch-1")
+let catch3 = $("#catch-2")
+let catch4 = $("#catch-3")
+let release1 = $("#release-0")
+let release2 = $("#release-1")
+let release3 = $("#release-2")
+let release4 = $("#release-3")
+let release5 = $("#release-4")
+let release6 = $("#release-5")
 let globalType = ""
-let pokeSavable =[]
-let pokePersist =[]
+let pokeSavable = []
+let pokePersist = []
 const pokemon = {
     types: [
-    "normal",
-    "fire",
-    "water",
-    "grass",
-    "electric",
-    "ice",
-    "fighting",
-    "poison",
-    "ground",
-    "flying",
-    "psychic",
-    "bug",
-    "rock",
-    "ghost",
-    "dark",
-    "dragon",
-    "steel",
-    "fariy"
+        "normal",
+        "fire",
+        "water",
+        "grass",
+        "electric",
+        "ice",
+        "fighting",
+        "poison",
+        "ground",
+        "flying",
+        "psychic",
+        "bug",
+        "rock",
+        "ghost",
+        "dark",
+        "dragon",
+        "steel",
+        "fariy"
     ]
 }
 let searchElements = {
     element: "7f131d38f4522306e0a68bfbf8394fcd"
 }
 
-function populateBank(){
+function removePoke(release){
+    if (pokePersist.length <= 0) {
+        alert("you don't have any pokemon!")
+    }
+    else {
+        // pokePersist.push(pokeSavable[pokemon])
 
+        // localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+        // console.log(pokePersist)
+        // populateBank()
+        let hand1 = pokePersist[pokePersist.length - 1]
+        
+        let hand2 = pokePersist[release]
+        pokePersist[pokePersist.length - 1] = hand2
+        pokePersist[release] = hand1
+        pokePersist.pop()
+        persistData("",true)
+        location.reload()
+        
+    //     let i = 0
+
+
+    // while(pokePersist[i] !=""){
+    //     let shifty = pokePersist.shift()
+    //     pokePersist.push(shifty)
+    //     i++
+
+    // }
+    }
+    
 }
 
-function loaddata(){
+function populateBank() {
+    
+    for (let i = 0; i < pokePersist.length; i++) {
+        //     
+        if(pokePersist[i]){
+            let pokeBankNameEl = $("#pokeBankName-" + i)
+        let pokeBankSpriteEl = $("#pokeBankImage-" + i)
+        let pokeBankType = $("#pokeBank-type-target" + i)
+        let imgURL = pokePersist[i].sprite
+        let formattedName = pokePersist[i].name.replace("-", " ")
+        let imgShinyURL = pokePersist[i].spriteShiny
+        let imgFemaleURL = pokePersist[i].spriteFemale
+        let imgFemaleShinyURL = pokePersist[i].spriteFemaleShiny
+        let fullType
+        let type1 = pokePersist[i].types[0].type.name
+        if (pokePersist[i].types.length == 2) {
+            let type2 = pokePersist[i].types[1].type.name
+            fullType = type1 + " / " + type2
+        } else {
+            fullType = type1
+        }
+
+
+
+
+        pokeBankNameEl.html(formattedName)
+        pokeBankSpriteEl.html(" ")
+        let imgComponent = $("<img>")
+        imgComponent.attr("id", "img" + i)
+        imgComponent.addClass("is-128x128")
+
+        if (pokePersist[i].isFemale) {
+            if (pokePersist[i].isShiny) {
+                imgComponent.attr("src", imgFemaleShinyURL)
+            }
+            else {
+                imgComponent.attr("src", imgFemaleURL)
+            }
+        }
+        else if (pokePersist[i].isShiny) {
+            imgComponent.attr("src", imgShinyURL)
+        }
+        else {
+            imgComponent.attr("src", imgURL)
+        }
+        pokeBankSpriteEl.append(imgComponent)
+
+        pokeBankType.html(fullType)
+        }
+
+    } 
+}
+
+function loaddata() {
     pokePersist = JSON.parse(localStorage.getItem("pokeBank"))
 
-    if(!pokePersist){
+    if (!pokePersist) {
         pokePersist = []
     }
-    else{
+    else {
         console.log(pokePersist)
         populateBank()
     }
 
 }
 
-function persistData(pokemon){
-
-    if(pokePersist.length==6){
-        alert("you already have 6 pokemon!")
+function persistData(pokemon,run) {
+    if(!run){
+        if (pokePersist.length >= 6) {
+            alert("you already have 6 pokemon!")
+        }
+        else {
+            pokePersist.push(pokeSavable[pokemon])
+    
+            localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+            console.log(pokePersist)
+            populateBank()
+        }
     }
     else{
-        pokePersist.push(pokeSavable[pokemon])
-
-    
-        console.log(pokePersist)
+        localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+            console.log(pokePersist)
+            populateBank()
     }
 
-    
 
-    // localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+
 }
 
-function displayData(weatherData,pokeData){
+function displayData(weatherData, pokeData) {
     // console.log(weatherData)
     pokeSavable = pokeData
     console.log(pokeData)
@@ -83,58 +176,58 @@ function displayData(weatherData,pokeData){
     pokeParade.removeClass("is-invisible")
 
     for (let i = 0; i < 4; i++) {
-        // debugger    
-        let pokeNameEl = $("#pokeName-"+ i)
-        let pokeSpriteEl = $("#pokeImage-"+i)
-        let pokeType = $("#poke-type-target"+i)
+        //     
+        let pokeNameEl = $("#pokeName-" + i)
+        let pokeSpriteEl = $("#pokeImage-" + i)
+        let pokeType = $("#poke-type-target" + i)
         let imgURL = pokeData[i].sprite
-        let formattedName = pokeData[i].name.replace("-"," ")
+        let formattedName = pokeData[i].name.replace("-", " ")
         let imgShinyURL = pokeData[i].spriteShiny
         let imgFemaleURL = pokeData[i].spriteFemale
         let imgFemaleShinyURL = pokeData[i].spriteFemaleShiny
         let fullType
         let type1 = pokeData[i].types[0].type.name
-        if(pokeData[i].types.length == 2){
+        if (pokeData[i].types.length == 2) {
             let type2 = pokeData[i].types[1].type.name
-            fullType = type1 + " / "+ type2
-        }else{
-            fullType = type1 
+            fullType = type1 + " / " + type2
+        } else {
+            fullType = type1
         }
-         
 
-        
+
+
 
         pokeNameEl.html(formattedName)
         pokeSpriteEl.html(" ")
         let imgComponent = $("<img>")
-        imgComponent.attr("id","img"+i)
+        imgComponent.attr("id", "img" + i)
         imgComponent.addClass("is-128x128")
 
-        if(pokeData[i].isFemale){
-            if(pokeData[i].isShiny){
-                imgComponent.attr("src",imgFemaleShinyURL)
+        if (pokeData[i].isFemale) {
+            if (pokeData[i].isShiny) {
+                imgComponent.attr("src", imgFemaleShinyURL)
             }
-            else{
-                imgComponent.attr("src",imgFemaleURL)
+            else {
+                imgComponent.attr("src", imgFemaleURL)
             }
         }
-        else if(pokeData[i].isShiny){
-            imgComponent.attr("src",imgShinyURL)
+        else if (pokeData[i].isShiny) {
+            imgComponent.attr("src", imgShinyURL)
         }
-        else{
-            imgComponent.attr("src",imgURL)
+        else {
+            imgComponent.attr("src", imgURL)
         }
         pokeSpriteEl.append(imgComponent)
 
         pokeType.html(fullType)
 
-    }1
+    } 
 
 }
 
 //trasnslate weather conditions to pokemon types
-function pokeTypeTranslate(weatherObj){
-    
+function pokeTypeTranslate(weatherObj) {
+
     let status = weatherObj.status
     let temp = weatherObj.CurrentTemp
     let windSp = weatherObj.CurrentWind
@@ -143,280 +236,292 @@ function pokeTypeTranslate(weatherObj){
     let pokeType;
 
     //determine type based on weather status
-   
-    switch(status){
-    case 'Thunderstorm':
-        pokeType = pokemon.types[4]
-    break;
-    case 'Drizzle':
-        pokeType =  pokemon.types[3]
-    break;
-    case 'Rain':
-        pokeType = pokemon.types[2]
-    break;
-    case 'Snow':
-        pokeType =  pokemon.types[5]
-    break;
-    case 'Clear':
-        pokeType = pokemon.types[0]
-    break
-    case 'Clouds':
-        pokeType = pokemon.types[9]
-    break;
-    case 'Smoke':
-        pokeType = pokemon.types[7]
-    break;
-    case 'Sand':
-        pokeType = pokemon.types[8]
-    break;
-    case 'Mist':
-        pokeType = pokemon.types[17]
-    break;
-    case 'Dust':
-        pokeType = pokemon.types[12]
-    case 'fog':
-        pokeType = pokemon.types[13]
-    break;
-    case 'Squall':
-        pokeType = pokemon.types[6]
-    break;
-    case 'Tornado':
-        pokeType = pokemon.types[16]
-    break;
-    case 'Ash':
-        pokeType = pokemon.types[1]
-    break;
-    default:
-        pokeType = pokemon.types[0]
+
+    switch (status) {
+        case 'Thunderstorm':
+            pokeType = pokemon.types[4]
+            break;
+        case 'Drizzle':
+            pokeType = pokemon.types[3]
+            break;
+        case 'Rain':
+            pokeType = pokemon.types[2]
+            break;
+        case 'Snow':
+            pokeType = pokemon.types[5]
+            break;
+        case 'Clear':
+            pokeType = pokemon.types[0]
+            break
+        case 'Clouds':
+            pokeType = pokemon.types[9]
+            break;
+        case 'Smoke':
+            pokeType = pokemon.types[7]
+            break;
+        case 'Sand':
+            pokeType = pokemon.types[8]
+            break;
+        case 'Mist':
+            pokeType = pokemon.types[17]
+            break;
+        case 'Dust':
+            pokeType = pokemon.types[12]
+        case 'fog':
+            pokeType = pokemon.types[13]
+            break;
+        case 'Squall':
+            pokeType = pokemon.types[6]
+            break;
+        case 'Tornado':
+            pokeType = pokemon.types[16]
+            break;
+        case 'Ash':
+            pokeType = pokemon.types[1]
+            break;
+        default:
+            pokeType = pokemon.types[0]
     }
 
     //overrides
 
-    if(uvi=0){
+    if (uvi = 0) {
         pokeType = pokemon.types[14]
     }
-    else if(uvi>10){
+    else if (uvi > 10) {
         pokeType = pokemon.types[1]
     }
-    
-    if(windSp>6 && uvi > 6 ){
+
+    if (windSp > 6 && uvi > 6) {
         pokeType == pokemon.types[15]
     }
 
-     if(temp > 32 && humidity>40)
-    {
+    if (temp > 32 && humidity > 40) {
         pokeType = pokemon.types[11]
     }
 
-    if(windSp <1 && uvi <4 ){
-        pokeType =  pokemon.types[10]
+    if (windSp < 1 && uvi < 4) {
+        pokeType = pokemon.types[10]
     }
 
     return pokeType
-    
+
 }
 
-function ApiConnect(searchArg){
-    // debugger
+function ApiConnect(searchArg) {
+    // 
     searchButton.addClass('is-loading')
     //function declarations for API Calls
 
-    function pokeConnect(pokeArr,weatherObj){
-
+    async function pokeConnect(pokeArr, weatherObj) {
         for (let i = 0; i < 4; i++) {
             let pokeURL = pokeArr[i].url
-            fetch(pokeURL)
-            .then(function(response){
-                response.json().then(function(data){
+            await fetch(pokeURL)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
                     pokeArr[i].sprite = data.sprites.front_default
                     pokeArr[i].spriteShiny = data.sprites.front_shiny
                     //female
                     pokeArr[i].spriteFemale = data.sprites.front_female
                     pokeArr[i].spriteFemaleShiny = data.sprites.front_shiny_female
                     pokeArr[i].types = data.types
-                    let shinyStat = Math.floor(Math.random() * 9 );
-                    let femaleStat = Math.floor(Math.random() * 2 );
+                    let shinyStat = Math.floor(Math.random() * 9);
+                    let femaleStat = Math.floor(Math.random() * 2);
 
-                    if(shinyStat == 5){
-                        if(data.sprites.front_shiny){
+                    if (shinyStat == 5) {
+                        if (data.sprites.front_shiny) {
                             pokeArr[i].isShiny = true
                         }
                     }
-                    else{
+                    else {
                         pokeArr[i].isShiny = false
                     }
 
-                    if(femaleStat == 1 ){
-                        if(data.sprites.front_shiny_female){
-                        pokeArr[i].isFemale = true
+                    if (femaleStat == 1) {
+                        if (data.sprites.front_shiny_female) {
+                            pokeArr[i].isFemale = true
                         }
                     }
-                    else{
+                    else {
                         pokeArr[i].isFemale = false
                     }
 
-                    if(i==3){
-                        // debugger
-                        console.log("lets see",pokeArr)
+                    if (i == 3) {
+                        // 
+                        console.log("lets see", pokeArr)
                         searchButton.removeClass('is-loading')
-                        displayData(weatherObj,pokeArr)
+                        displayData(weatherObj, pokeArr)
                     }
 
                 })
-            })
         }
 
-
-        
     }
 
-    function typeConnect(type,weatherObj){
+    function typeConnect(type, weatherObj) {
 
         let typeURL = "https://pokeapi.co/api/v2/type/" + type
         fetch(typeURL)
-        .then(function(response){
-            if(response.ok){
-                // debugger
-                response.json().then(function(data){
-                    // list
-                    let pokeObj ={}
-                    let pokeArr = []
-                    let maxLength = data.pokemon.length - 1
-                    for (let i = 0; i < 4; i++) {
-                        let pokemonIndex = [] 
-                        pokemonIndex[i] = Math.floor(Math.random() * maxLength);
-                        pokeObj = data.pokemon[pokemonIndex[i]].pokemon
-                        pokeObj.slot = data.pokemon[pokemonIndex[i]].slot
-                        globalType = type
-                        let finalObj = pokeObj
-                        
-                        console.log("first",pokeObj)
-                        pokeArr.push(finalObj)
-                        
-                    }
+            .then(function (response) {
+                if (response.ok) {
+                    // 
+                    response.json().then(function (data) {
+                        // list
+                        let pokeObj = {}
+                        let pokeArr = []
+                        let maxLength = data.pokemon.length - 1
+                        for (let i = 0; i < 4; i++) {
+                            let pokemonIndex = []
+                            pokemonIndex[i] = Math.floor(Math.random() * maxLength);
+                            pokeObj = data.pokemon[pokemonIndex[i]].pokemon
+                            pokeObj.slot = data.pokemon[pokemonIndex[i]].slot
+                            globalType = type
+                            let finalObj = pokeObj
+
+                            console.log("first", pokeObj)
+                            pokeArr.push(finalObj)
+
+                        }
 
 
-                    return pokeConnect(pokeArr,weatherObj)
+                        return pokeConnect(pokeArr, weatherObj)
 
-                })
-            }
-            else{
-                alert("Error with Pokemon Fetch")
+                    })
+                }
+                else {
+                    alert("Error with Pokemon Fetch")
+                    searchButton.removeClass('is-loading')
+                }
+            })
+            .catch(function (error) {
+                alert("Unable to pokemon data / connection failed")
                 searchButton.removeClass('is-loading')
-            }
-        })
-        .catch(function(error){
-            alert("Unable to pokemon data / connection failed")
-            searchButton.removeClass('is-loading')
-        })
+            })
     }
 
-    function UVConnect(weatherObj){
+    function UVConnect(weatherObj) {
         lat = weatherObj.lat
         lon = weatherObj.lon
-        let WeatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat +"&lon="+ lon +"&exclude=minutely,hourly&units=metric&appid=" + searchElements.element
+        let WeatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&units=metric&appid=" + searchElements.element
         fetch(WeatherURL)
-        .then(function(response){
-            if(response.ok){
-                response.json().then(function(data){
-                    // console.log(data.current)
-                    weatherObj.UVI = data.current.uvi
-                    weatherObj.daily = data.daily
-                    weatherObj.statusDesc = data.current.weather[0].description
-                    
-                    
+            .then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (data) {
+                        // console.log(data.current)
+                        weatherObj.UVI = data.current.uvi
+                        weatherObj.daily = data.daily
+                        weatherObj.statusDesc = data.current.weather[0].description
 
-                    for (let i = 1; i < data.daily.length; i++) {
-                        weatherObj.daily[0] = ""
-                        weatherObj.daily[i].date = moment.unix(data.daily[i].dt).format("MM/DD/YYYY")
-                        weatherObj.daily[i].temp = data.daily[i].temp.day
-                        weatherObj.daily[i].wind = data.daily[i].wind_speed
-                        weatherObj.daily[i].humidity = data.daily[i].humidity
-                        weatherObj.daily[i].iconCode = data.daily[i].weather[0].icon
-                        weatherObj.daily[i].status = data.daily[i].weather[0].main
-                        weatherObj.daily[i].iconURL = "<img src='https://openweathermap.org/img/wn/"+ weatherObj.daily[i].iconCode + ".png'> ("+weatherObj.daily[i].status+")"
-                    
-                      }
 
-                    let type = pokeTypeTranslate(weatherObj)
-                    return typeConnect(type,weatherObj)
-                    
 
-                })
-            }
-            else{
-                alert("Unable to find that city")
+                        for (let i = 1; i < data.daily.length; i++) {
+                            weatherObj.daily[0] = ""
+                            weatherObj.daily[i].date = moment.unix(data.daily[i].dt).format("MM/DD/YYYY")
+                            weatherObj.daily[i].temp = data.daily[i].temp.day
+                            weatherObj.daily[i].wind = data.daily[i].wind_speed
+                            weatherObj.daily[i].humidity = data.daily[i].humidity
+                            weatherObj.daily[i].iconCode = data.daily[i].weather[0].icon
+                            weatherObj.daily[i].status = data.daily[i].weather[0].main
+                            weatherObj.daily[i].iconURL = "<img src='https://openweathermap.org/img/wn/" + weatherObj.daily[i].iconCode + ".png'> (" + weatherObj.daily[i].status + ")"
+
+                        }
+
+                        let type = pokeTypeTranslate(weatherObj)
+                        return typeConnect(type, weatherObj)
+
+
+                    })
+                }
+                else {
+                    alert("Unable to find that city")
+                    searchButton.removeClass('is-loading')
+                }
+            })
+            .catch(function (error) {
+                alert("Unable to fetch weather data / connection failed")
                 searchButton.removeClass('is-loading')
-            }
-        })
-        .catch(function(error){
-            alert("Unable to fetch weather data / connection failed")
-            searchButton.removeClass('is-loading')
-        })
+            })
     }
 
-    function weatherConnect(){
-        let latLongURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchArg + "&units=metric&appid="+ searchElements.element
-    fetch(latLongURL)
-        .then(function(response){
-            if(response.ok){
-                response.json().then(function(data){
-                    // console.log(data)
-                    let dataToUse = {}
-                     dataToUse.lat = data.coord.lat
-                     dataToUse.lon = data.coord.lon
-                     dataToUse.city = data.name
-                     dataToUse.CurrentTemp = data.main.temp
-                     dataToUse.CurrentWind = data.wind.speed
-                     dataToUse.CurrentHum = data.main.humidity
-                     dataToUse.Date = moment.unix(data.dt).format("MM/DD/YYYY")
-                     dataToUse.iconCode = data.weather[0].icon
-                     dataToUse.status = data.weather[0].main
-                     dataToUse.iconURL = "<img src='https://openweathermap.org/img/wn/"+ dataToUse.iconCode + ".png'> ("+dataToUse.status+")"
-                     dataToUse.spanHTML = "<span class= 'tag is-large is-info mb-3' id='icon-target'>"+dataToUse.iconURL+"</span>"
-                    return UVConnect(dataToUse)
-                    // return dataToUse
-                    
-                    //add hisotry logic for later
-                })
-            }
-            else{
-                alert("Unable to find that city")
+    function weatherConnect() {
+        let latLongURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchArg + "&units=metric&appid=" + searchElements.element
+        fetch(latLongURL)
+            .then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (data) {
+                        // console.log(data)
+                        let dataToUse = {}
+                        dataToUse.lat = data.coord.lat
+                        dataToUse.lon = data.coord.lon
+                        dataToUse.city = data.name
+                        dataToUse.CurrentTemp = data.main.temp
+                        dataToUse.CurrentWind = data.wind.speed
+                        dataToUse.CurrentHum = data.main.humidity
+                        dataToUse.Date = moment.unix(data.dt).format("MM/DD/YYYY")
+                        dataToUse.iconCode = data.weather[0].icon
+                        dataToUse.status = data.weather[0].main
+                        dataToUse.iconURL = "<img src='https://openweathermap.org/img/wn/" + dataToUse.iconCode + ".png'> (" + dataToUse.status + ")"
+                        dataToUse.spanHTML = "<span class= 'tag is-large is-info mb-3' id='icon-target'>" + dataToUse.iconURL + "</span>"
+                        return UVConnect(dataToUse)
+                        // return dataToUse
+
+                        //add hisotry logic for later
+                    })
+                }
+                else {
+                    alert("Unable to find that city")
+                    searchButton.removeClass('is-loading')
+                }
+            })
+            .catch(function (error) {
+                alert("Unable to fetch weather data / connection failed")
                 searchButton.removeClass('is-loading')
-            }
-        })
-        .catch(function(error){
-            alert("Unable to fetch weather data / connection failed")
-            searchButton.removeClass('is-loading')
-        })
+            })
     }
     // let weatherConnect = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat +"&lon="+ lon +"&appid=" + searchElements.element
 
     weatherConnect();
 }
 
-
-
-
-
-
-searchButton.on("click",function(){
+searchButton.on("click", function () {
     searchterms = searchfield.val()
     ApiConnect(searchterms)
 
 })
 
-catch1.on("click",function(){
+//I dont know why bubbling wasnt working :(
+catch1.on("click", function () {
     persistData(0)
 })
-catch2.on("click",function(event,target){
+catch2.on("click", function (event, target) {
     persistData(1)
 })
-catch3.on("click",function(event,target){
+catch3.on("click", function (event, target) {
     persistData(2)
 })
-catch4.on("click",function(event,target){
+catch4.on("click", function (event, target) {
     persistData(3)
+})
+
+release1.on("click", function () {
+    removePoke(0)
+})
+release2.on("click", function (event, target) {
+    removePoke(1)
+})
+release3.on("click", function (event, target) {
+    removePoke(2)
+})
+release4.on("click", function (event, target) {
+    removePoke(3)
+})
+release5.on("click", function (event, target) {
+    removePoke(4)
+})
+release6.on("click", function (event, target) {
+    removePoke(5)
 })
 
 loaddata()
