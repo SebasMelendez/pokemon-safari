@@ -82,7 +82,9 @@ function populateBank() {
     for (let i = 0; i < pokePersist.length; i++) {
         //     
         if(pokePersist[i]){
-            let pokeBankNameEl = $("#pokeBankName-" + i)
+        let buttonMod = $("#release-"+i)
+        buttonMod.removeClass("is-hidden")
+        let pokeBankNameEl = $("#pokeBankName-" + i)
         let pokeBankSpriteEl = $("#pokeBankImage-" + i)
         let pokeBankType = $("#pokeBank-type-target" + i)
         let imgURL = pokePersist[i].sprite
@@ -103,6 +105,18 @@ function populateBank() {
 
 
         pokeBankNameEl.html(formattedName)
+        if(pokePersist[i].isShiny){
+            let swap = pokeBankNameEl.html()
+            pokeBankNameEl.html(swap + "✨")
+        }
+        if(pokePersist[i].isFemale){
+            let swap = pokeBankNameEl.html()
+            pokeBankNameEl.html(swap + "♀")
+        }
+        else{
+            let swap = pokeBankNameEl.html()
+            pokeBankNameEl.html(swap + "♂")
+        }
         pokeBankSpriteEl.html(" ")
         let imgComponent = $("<img>")
         imgComponent.attr("id", "img" + i)
@@ -197,7 +211,20 @@ function displayData(weatherData, pokeData) {
 
 
 
+
         pokeNameEl.html(formattedName)
+        if(pokeData[i].isShiny){
+            let swap = pokeNameEl.html()
+            pokeNameEl.html(swap + "✨")
+        }
+        if(pokeData[i].isFemale){
+            let swap = pokeNameEl.html()
+            pokeNameEl.html(swap + "♀")
+        }
+        else{
+            let swap = pokeNameEl.html()
+            pokeNameEl.html(swap + "♂")
+        }
         pokeSpriteEl.html(" ")
         let imgComponent = $("<img>")
         imgComponent.attr("id", "img" + i)
@@ -491,6 +518,11 @@ searchButton.on("click", function () {
 
 })
 
+clearButton.on("click", function () {
+ searchfield.val("")
+
+
+})
 //I dont know why bubbling wasnt working :(
 catch1.on("click", function () {
     persistData(0)
