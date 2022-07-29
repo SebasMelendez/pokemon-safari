@@ -12,6 +12,7 @@ let catch3 =$("#catch-2")
 let catch4 =$("#catch-3")
 let globalType = ""
 let pokeSavable =[]
+let pokePersist =[]
 const pokemon = {
     types: [
     "normal",
@@ -38,6 +39,39 @@ let searchElements = {
     element: "7f131d38f4522306e0a68bfbf8394fcd"
 }
 
+function populateBank(){
+
+}
+
+function loaddata(){
+    pokePersist = JSON.parse(localStorage.getItem("pokeBank"))
+
+    if(!pokePersist){
+        pokePersist = []
+    }
+    else{
+        console.log(pokePersist)
+        populateBank()
+    }
+
+}
+
+function persistData(pokemon){
+
+    if(pokePersist.length==6){
+        alert("you already have 6 pokemon!")
+    }
+    else{
+        pokePersist.push(pokeSavable[pokemon])
+
+    
+        console.log(pokePersist)
+    }
+
+    
+
+    // localStorage.setItem("pokeBank",JSON.stringify(pokePersist))
+}
 
 function displayData(weatherData,pokeData){
     // console.log(weatherData)
@@ -372,15 +406,17 @@ searchButton.on("click",function(){
 
 })
 
-catch1.on("click",function(event,target){
+catch1.on("click",function(){
     persistData(0)
 })
 catch2.on("click",function(event,target){
-    persistData(0)
+    persistData(1)
 })
 catch3.on("click",function(event,target){
-    persistData(0)
+    persistData(2)
 })
 catch4.on("click",function(event,target){
-    persistData(0)
+    persistData(3)
 })
+
+loaddata()
